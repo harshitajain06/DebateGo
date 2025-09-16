@@ -3,13 +3,12 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-     apiKey: "AIzaSyAcrjPYvfPdSxkmSWINZyltcTn9hRQLTu8",
-  authDomain: "debatego-d6879.firebaseapp.com",
-  projectId: "debatego-d6879",
-  storageBucket: "debatego-d6879.firebasestorage.app",
-  messagingSenderId: "899225015887",
-  appId: "1:899225015887:web:833cb3457b719b07ff7c3a",
-  measurementId: "G-GYKXDLF11W"
+  apiKey: "AIzaSyBV2Q-_nJIcRHGUbhtwu8eKN9UAeaPvwQw",
+  authDomain: "fir-authentication-8abb6.firebaseapp.com",
+  projectId: "fir-authentication-8abb6",
+  storageBucket: "fir-authentication-8abb6.appspot.com",
+  messagingSenderId: "854259513422",
+  appId: "1:854259513422:web:9a3d38f04501b643f0ab1f"
 };
 
 const app = initializeApp(firebaseConfig);

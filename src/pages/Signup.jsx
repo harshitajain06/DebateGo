@@ -20,31 +20,54 @@ const Signup = () => {
   const handleGoogleSignup = async () => {
     const provider = new GoogleAuthProvider();
     try {
+      console.log("Attempting Google signup...");
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+      console.log("Google signup successful:", user);
 
       // Check if user already exists
+      console.log("Checking if user exists in Firestore...");
       const userDocRef = doc(db, "DebateGoUsers", user.uid);
       const userDocSnap = await getDoc(userDocRef);
+      console.log("User document exists:", userDocSnap.exists());
 
       if (!userDocSnap.exists()) {
         // If not exists, create user doc
+        console.log("Creating new user document...");
         await setDoc(userDocRef, {
           displayName: user.displayName,
           email: user.email,
           role: "user",
           score: 0,
         });
+        console.log("User document created successfully");
         toast.success("Account created successfully!");
       } else {
+        console.log("User already exists, logging in...");
         toast.info("Account already exists. Logging you in...");
       }
 
-      navigate("/");
+      console.log("Navigating to dashboard...");
+      // Small delay to ensure auth state is updated
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 100);
 
     } catch (error) {
-      console.error("Google Signup Error:", error.message);
-      toast.error("Signup failed. Try again.");
+      console.error("Google Signup Error:", error);
+      console.error("Error code:", error.code);
+      console.error("Error message:", error.message);
+      
+      // More specific error messages
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.error("Signup cancelled. Please try again.");
+      } else if (error.code === 'auth/popup-blocked') {
+        toast.error("Popup blocked. Please allow popups for this site.");
+      } else if (error.code === 'auth/unauthorized-domain') {
+        toast.error("This domain is not authorized. Please contact support.");
+      } else {
+        toast.error(`Signup failed: ${error.message}`);
+      }
     }
   };
 
